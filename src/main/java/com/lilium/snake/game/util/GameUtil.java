@@ -14,7 +14,6 @@ public final class GameUtil {
      * Dimensions of game world 300x300.
      */
     public static final int GAME_DIMENSIONS = 300;
-
     /**
      * Size of a player body part (head or tail).
      */
@@ -22,7 +21,7 @@ public final class GameUtil {
     // endregion
 
     // region Constructor
-    public GameUtil() {}
+    private GameUtil() {}
     // endregion
 
     // region Implementation

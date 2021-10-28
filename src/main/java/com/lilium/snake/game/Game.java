@@ -2,12 +2,12 @@ package com.lilium.snake.game;
 
 import com.lilium.snake.game.helper.Direction;
 import com.lilium.snake.game.helper.Position;
+import com.lilium.snake.game.util.GameUtil;
 import com.lilium.snake.game.util.PositionUtil;
 import com.lilium.snake.game.util.RewardUtil;
 import com.lilium.snake.network.Action;
 import com.lilium.snake.network.GameState;
 import com.lilium.snake.network.util.GameStateUtil;
-import com.lilium.snake.game.util.GameUtil;
 import com.lilium.snake.network.util.NetworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +29,10 @@ public class Game extends JPanel implements ActionListener {
     // region Member
     private static final Logger LOG = LoggerFactory.getLogger(Game.class);
 
-    private static Image FOOD_IMAGE = GameUtil.getFoodImage();
-    private static Image TAIL_IMAGE = GameUtil.getTailImage();
-    private static Image HEAD_IMAGE = GameUtil.getHeadImage();
-    private static Image OBSERVATION_IMAGE = GameUtil.getObservationImage();
+    private static final Image FOOD_IMAGE = GameUtil.getFoodImage();
+    private static final Image TAIL_IMAGE = GameUtil.getTailImage();
+    private static final Image HEAD_IMAGE = GameUtil.getHeadImage();
+    private static final Image OBSERVATION_IMAGE = GameUtil.getObservationImage();
 
     // Used to keep track of all snake parts (positions of the tail and head)
     private transient Position[] snakePosition = new Position[900];
@@ -53,12 +53,13 @@ public class Game extends JPanel implements ActionListener {
     }
     // endregion
 
+    // region Implementation
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(isOngoing()) {
+        if (isOngoing()) {
             if (isFoodEaten()) {
                 // Increase player length
-                snakeLength ++;
+                snakeLength++;
 
                 // Set food on a new position
                 setFoodPosition();
@@ -100,9 +101,7 @@ public class Game extends JPanel implements ActionListener {
      */
     public void move() {
         // Copy positions (e.g. head position is not moved to the top of the body, body - 1 is not body - 2 and so on)
-        if (snakeLength - 1 >= 0) {
-            System.arraycopy(snakePosition, 0, snakePosition, 1, snakeLength - 1);
-        }
+        if (snakeLength - 1 >= 0) System.arraycopy(snakePosition, 0, snakePosition, 1, snakeLength - 1);
 
         // Previous head position is currently at index 1
         final Position previousHeadPosition = snakePosition[1];
@@ -128,15 +127,15 @@ public class Game extends JPanel implements ActionListener {
                 currentDirection = Direction.UP;
                 break;
             case MOVE_RIGHT:
-                if (currentDirection == Direction.RIGHT) break;
+                if (currentDirection == Direction.LEFT) break;
                 currentDirection = Direction.RIGHT;
                 break;
             case MOVE_DOWN:
-                if (currentDirection == Direction.DOWN) break;
+                if (currentDirection == Direction.UP) break;
                 currentDirection = Direction.DOWN;
                 break;
             case MOVE_LEFT:
-                if (currentDirection == Direction.LEFT) break;
+                if (currentDirection == Direction.RIGHT) break;
                 currentDirection = Direction.LEFT;
                 break;
         }
@@ -150,7 +149,7 @@ public class Game extends JPanel implements ActionListener {
         snakePosition = new Position[900];
 
         // Set snake on it's default position
-        for (int i = 0; i < snakeLength; i ++) {
+        for (int i = 0; i < snakeLength; i++) {
             snakePosition[i] = new Position(50 - i * GameUtil.PLAYER_SIZE, 50);
         }
 
@@ -209,10 +208,11 @@ public class Game extends JPanel implements ActionListener {
                 foodPosition
         );
     }
+    // endregion
 
     // region Helper
     private void draw(final Graphics graphics) {
-        if(!isOngoing()) {
+        if (!isOngoing()) {
             return;
         }
 
@@ -220,7 +220,7 @@ public class Game extends JPanel implements ActionListener {
         graphics.drawImage(FOOD_IMAGE, foodPosition.getX(), foodPosition.getY(), this);
 
         // Draw snake
-        for (int i = 0; i < snakeLength; i ++) {
+        for (int i = 0; i < snakeLength; i++) {
             // Position of one of the snake parts (head or tail)
             final Position pos = snakePosition[i];
             if (pos == null) {
@@ -235,10 +235,10 @@ public class Game extends JPanel implements ActionListener {
         final Position[] observations = new Position[NetworkUtil.NUMBER_OF_INPUTS];
         // If we decide to have more inputs we need to modify the code to get more then just next position
         observations[0] = PositionUtil.getNextPosition(headPosition, Direction.UP);
-        observations[0] = PositionUtil.getNextPosition(headPosition, Direction.RIGHT);
-        observations[0] = PositionUtil.getNextPosition(headPosition, Direction.DOWN);
-        observations[0] = PositionUtil.getNextPosition(headPosition, Direction.LEFT);
-        for (int i = 0; i < observations.length; i ++) {
+        observations[1] = PositionUtil.getNextPosition(headPosition, Direction.RIGHT);
+        observations[2] = PositionUtil.getNextPosition(headPosition, Direction.DOWN);
+        observations[3] = PositionUtil.getNextPosition(headPosition, Direction.LEFT);
+        for (int i = 0; i < observations.length; i++) {
             final Position pos = observations[i];
             if (pos == null) {
                 continue;
@@ -255,7 +255,7 @@ public class Game extends JPanel implements ActionListener {
     private void setFoodPosition() {
         foodPosition = new Position(
                 (int) (Math.random() * 29) * GameUtil.PLAYER_SIZE,
-                (int) (Math.random() * 29) * GameUtil.PLAYER_SIZE
+                (int) (Math.random() * 29)  * GameUtil.PLAYER_SIZE
         );
 
         // Do not set food onto snake
@@ -275,7 +275,7 @@ public class Game extends JPanel implements ActionListener {
         final long matches = Arrays.stream(snakePosition)
                 .filter(Objects::nonNull)
                 .filter(pos -> pos.equals(headPosition))
-            .count();
+                .count();
 
         if (matches > 1) {
             endGame();

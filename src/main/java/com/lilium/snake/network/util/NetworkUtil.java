@@ -1,5 +1,4 @@
 package com.lilium.snake.network.util;
-
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.rl4j.learning.configuration.QLearningConfiguration;
 import org.deeplearning4j.rl4j.network.configuration.DQNDenseNetworkConfiguration;
@@ -45,7 +44,7 @@ public final class NetworkUtil {
                 .minEpsilon(0.1f)
                 .epsilonNbStep(1000)
                 .doubleDQN(true)
-            .build();
+                .build();
     }
 
     public static DQNFactoryStdDense buildDQNFactory() {
@@ -54,7 +53,7 @@ public final class NetworkUtil {
                 .updater(new RmsProp(0.000025))
                 .numHiddenNodes(300)
                 .numLayers(2)
-            .build();
+                .build();
 
         return new DQNFactoryStdDense(build);
     }

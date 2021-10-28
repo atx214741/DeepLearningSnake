@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GameStateUtilTest {
+
     @Test
     public void testBuildStateObservation() {
         final Position[] snakePosition = new Position[]{

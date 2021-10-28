@@ -1,5 +1,10 @@
 package com.lilium.snake.game.helper;
 
+/**
+ * Enum containing possible directions player can take.
+ *
+ * @author mirza
+ */
 public enum Direction {
     /**
      * Player will move up.

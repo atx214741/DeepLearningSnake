@@ -36,5 +36,4 @@ public class GameState implements Encodable {
     public Encodable dup() {
         return null;
     }
-
 }
