@@ -40,7 +40,7 @@ public class Environment implements MDP<GameState, Integer, DiscreteSpace> {
     public void close() {}
 
     @Override
-    public StepReply<GameState> step(Integer actionIndex) {
+    public StepReply<GameState> step(final Integer actionIndex) {
         // Find action based on action index
         final Action actionToTake = Action.getActionByIndex(actionIndex);
 

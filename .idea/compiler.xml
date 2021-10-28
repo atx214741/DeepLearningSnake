@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="deeplearning4j-snake-game" />
+        <module name="DeepLearningSnake" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="15" />

@@ -29,10 +29,10 @@ public class Game extends JPanel implements ActionListener {
     // region Member
     private static final Logger LOG = LoggerFactory.getLogger(Game.class);
 
-    private static Image FOOD_IMAGE = GameUtil.getFoodImage();
-    private static Image TAIL_IMAGE = GameUtil.getTailImage();
-    private static Image HEAD_IMAGE = GameUtil.getHeadImage();
-    private static Image OBSERVATION_IMAGE = GameUtil.getObservationImage();
+    private static final Image FOOD_IMAGE = GameUtil.getFoodImage();
+    private static final Image TAIL_IMAGE = GameUtil.getTailImage();
+    private static final Image HEAD_IMAGE = GameUtil.getHeadImage();
+    private static final Image OBSERVATION_IMAGE = GameUtil.getObservationImage();
 
     // Used to keep track of all snake parts (positions of the tail and head)
     private transient Position[] snakePosition = new Position[900];
@@ -128,15 +128,15 @@ public class Game extends JPanel implements ActionListener {
                 currentDirection = Direction.UP;
                 break;
             case MOVE_RIGHT:
-                if (currentDirection == Direction.RIGHT) break;
+                if (currentDirection == Direction.LEFT) break;
                 currentDirection = Direction.RIGHT;
                 break;
             case MOVE_DOWN:
-                if (currentDirection == Direction.DOWN) break;
+                if (currentDirection == Direction.UP) break;
                 currentDirection = Direction.DOWN;
                 break;
             case MOVE_LEFT:
-                if (currentDirection == Direction.LEFT) break;
+                if (currentDirection == Direction.RIGHT) break;
                 currentDirection = Direction.LEFT;
                 break;
         }
@@ -209,6 +209,7 @@ public class Game extends JPanel implements ActionListener {
                 foodPosition
         );
     }
+    // endregion
 
     // region Helper
     private void draw(final Graphics graphics) {
@@ -235,9 +236,9 @@ public class Game extends JPanel implements ActionListener {
         final Position[] observations = new Position[NetworkUtil.NUMBER_OF_INPUTS];
         // If we decide to have more inputs we need to modify the code to get more then just next position
         observations[0] = PositionUtil.getNextPosition(headPosition, Direction.UP);
-        observations[0] = PositionUtil.getNextPosition(headPosition, Direction.RIGHT);
-        observations[0] = PositionUtil.getNextPosition(headPosition, Direction.DOWN);
-        observations[0] = PositionUtil.getNextPosition(headPosition, Direction.LEFT);
+        observations[1] = PositionUtil.getNextPosition(headPosition, Direction.RIGHT);
+        observations[2] = PositionUtil.getNextPosition(headPosition, Direction.DOWN);
+        observations[3] = PositionUtil.getNextPosition(headPosition, Direction.LEFT);
         for (int i = 0; i < observations.length; i ++) {
             final Position pos = observations[i];
             if (pos == null) {

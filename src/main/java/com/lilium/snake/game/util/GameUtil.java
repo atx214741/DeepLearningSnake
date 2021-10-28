@@ -22,7 +22,7 @@ public final class GameUtil {
     // endregion
 
     // region Constructor
-    public GameUtil() {}
+    private GameUtil() {}
     // endregion
 
     // region Implementation

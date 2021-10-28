@@ -3,6 +3,7 @@ package com.lilium.snake.network;
 import com.lilium.snake.network.util.NetworkUtil;
 import org.deeplearning4j.rl4j.space.ObservationSpace;
 import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
 
 /**
  * Game observation space. Shape is [1, 4] as we observe 4 inputs. Starting from the snake head we "look" at position
@@ -16,22 +17,24 @@ public class GameObservationSpace implements ObservationSpace<GameState> {
 
     @Override
     public String getName() {
-        return null;
+        return "GameObservationSpace";
     }
 
     @Override
     public int[] getShape() {
-        return new int[0];
+        return new int[] {
+                1, NetworkUtil.NUMBER_OF_INPUTS
+        };
     }
 
     @Override
     public INDArray getLow() {
-        return null;
+        return Nd4j.create(LOWS);
     }
 
     @Override
     public INDArray getHigh() {
-        return null;
+        return Nd4j.create(HIGHS);
     }
 
     private static double[] createValueArray(final double value) {
